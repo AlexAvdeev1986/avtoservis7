@@ -46,23 +46,16 @@ sftp root@185.251.89.167
 
 перенести папку 
 
-scp -r avtoservis777 root@185.251.89.167:avtoservis777
+scp -r avtoservis7 root@185.251.89.167:avtoservis7
 
-scp -r Dockerfile root@185.251.89.167:avtoservis777/Dockerfile
+scp -r Dockerfile root@185.251.89.167:avtoservis7/Dockerfile
 
 
 3. Соберите Docker-образ, выполнив команду в той же директории, где находится ваш Dockerfile:
 
 ```bash
-sudo docker build -t my-python-app .
+sudo docker compose up -d 
 ```
-
-4. После успешного создания образа, запустите контейнер:
-
-```bash
-sudo docker run  my-python-app
-```
-sudo systemctl start docker
 
 
 sudo docker ps -a
