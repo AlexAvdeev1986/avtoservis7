@@ -433,7 +433,7 @@ server {
   root /var/www/html;
   index index.html index.htm;
 
-  server_name alex86foodgram444.ddns.net;
+  server_name tehosmotr886.ddns.net;
 
   location / {
       proxy_set_header Host $http_host;
@@ -443,8 +443,8 @@ server {
 
   listen [::]:443 ssl ipv6only=on; # managed by Certbot
   listen 443 ssl; # managed by Certbot
-  ssl_certificate /etc/letsencrypt/live/alex86foodgram444.ddns.net/fullchain.pem; # managed by Certbot
-  ssl_certificate_key /etc/letsencrypt/live/alex86foodgram444.ddns.net/privkey.pem; # managed by Certbot
+  ssl_certificate /etc/letsencrypt/live/tehosmotr886.ddns.net/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/tehosmotr886.ddns.net/privkey.pem; # managed by Certbot
   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
   ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
@@ -452,7 +452,7 @@ server {
 
 }
 server {
-  if ($host = alex86foodgram444.ddns.net) {
+  if ($host = tehosmotr886.ddns.net) {
       return 301 https://$host$request_uri;
   } # managed by Certbot
 
@@ -462,19 +462,22 @@ server {
   listen [::]:80 default_server;
 
 
-  server_name alex86foodgram444.ddns.net;
+  server_name tehosmotr886.ddns.net;
   return 404; # managed by Certbot
 
 
 
 }
 
+Откройте файл sudo nano /etc/nginx/sites-enabled/default и убедитесь в этом:
 
+После внесения изменений, перезапустите службу nginx:
+sudo service nginx restart
 
 #kittygram
 #kittygram
 server {
-server_name alex86foodgram444.ddns.net;
+server_name tehosmotr886.ddns.net;
 server_tokens off;
 
 
@@ -482,7 +485,7 @@ server_tokens off;
 
 location / {
   proxy_set_header Host $http_host;
-  proxy_pass http://127.0.0.1:9000;
+  proxy_pass http://127.0.0.1:8000;
 
 
 
@@ -490,22 +493,55 @@ location / {
 
 
   listen 443 ssl; # managed by Certbot
-  ssl_certificate /etc/letsencrypt/live/alex86foodgram444.ddns.net/fullchain.pem; # managed by Certbot
-  ssl_certificate_key /etc/letsencrypt/live/alex86foodgram444.ddns.net/privkey.pem; # managed by Certbot
+  ssl_certificate /etc/letsencrypt/live/tehosmotr886.ddns.net/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/tehosmotr886.ddns.net/privkey.pem; # managed by Certbot
   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
   ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
 
 }
 server {
-  if ($host = alex86foodgram444.ddns.net) {
+  if ($host = tehosmotr886.ddns.net) {
       return 301 https://$host$request_uri;
   } # managed by Certbot
 
 
 
 listen 80;
-server_name alex86foodgram444.ddns.net;
+server_name tehosmotr886.ddns.net;
   return 404; # managed by Certbot
 
+}
+
+Для того чтобы при открытии порта 8000 было видно, вам следует настроить Nginx для прослушивания этого порта. Вот как это можно сделать:
+
+Откройте файл конфигурации Nginx для default. Обычно он находится по пути /etc/nginx/sites-enabled/default.
+Внесите следующие изменения в файл:
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    # Корневая директория для веб-сервера
+    root /var/www/html;
+
+    # Индексные файлы
+    index index.html index.htm index.nginx-debian.html;
+
+    # Настройки сервера
+    server_name _;
+
+    location / {
+        # Попытка обработать запрос как файл, затем как директорию,
+        # и в случае неудачи — вернуть 404 ошибку.
+        try_files $uri $uri/ =404;
+    }
+
+    location /8000 {
+        proxy_pass http://127.0.0.1:8000; # Проксирование на порт 8000
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
 }
