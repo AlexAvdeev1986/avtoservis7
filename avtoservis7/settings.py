@@ -1,9 +1,8 @@
 import os
-import pathlib # Добавьте эту строку
+from pathlib import Path # Добавьте эту строку
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -11,9 +10,9 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+0@!+9!7!-4!-k!-w!-i!-n!-s!-e!-c!-u!-r!-e!-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", default=True)
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(", ")
 
 # Application definition
 
