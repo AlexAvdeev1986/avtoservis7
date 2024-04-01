@@ -48,7 +48,7 @@ sftp root@45.91.8.241
 
 scp -r avtoservis7 root@45.91.8.241:avtoservis7
 
-scp -r Dockerfile root@45.91.8.241:avtoservis7/Dockerfile
+scp -r .env root@45.91.8.241:.env
 
 
 3. Соберите Docker-образ, выполнив команду в той же директории, где находится ваш Dockerfile:
@@ -173,7 +173,7 @@ sudo docker compose exec backend python manage.py fill_data_base
 sudo docker compose up 
 sudo docker compose -f docker-compose.production.yml up 
 
-sudo docker compose -f docker-compose.production.yml up -d
+sudo docker compose -f docker-compose.yml up -d
 
 
 docker run -e POSTGRES_PASSWORD=foodgram_password -e POSTGRES_USER=foodgram_user postgres:13
@@ -422,126 +422,20 @@ sudo docker rmi -f $(sudo docker images -q)
 
 
 
+Откройте файл sudo nano /etc/nginx/sites-enabled/default и убедитесь в этом:
 
 
 
 
 # /etc/nginx/sites-enabled/default
-#Taski
 server {
-
-  root /var/www/html;
-  index index.html index.htm;
-
-  server_name tehosmotr886.ddns.net;
-
-  location / {
-      proxy_set_header Host $http_host;
-      proxy_pass http://127.0.0.1:9000;
-  }
-
-
-  listen [::]:443 ssl ipv6only=on; # managed by Certbot
-  listen 443 ssl; # managed by Certbot
-  ssl_certificate /etc/letsencrypt/live/tehosmotr886.ddns.net/fullchain.pem; # managed by Certbot
-  ssl_certificate_key /etc/letsencrypt/live/tehosmotr886.ddns.net/privkey.pem; # managed by Certbot
-  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-
-
-}
-server {
-  if ($host = tehosmotr886.ddns.net) {
-      return 301 https://$host$request_uri;
-  } # managed by Certbot
-
-
-
-  listen 80 default_server;
-  listen [::]:80 default_server;
-
-
-  server_name tehosmotr886.ddns.net;
-  return 404; # managed by Certbot
-
-
-
-}
-
-Откройте файл sudo nano /etc/nginx/sites-enabled/default и убедитесь в этом:
-
-После внесения изменений, перезапустите службу nginx:
-sudo service nginx restart
-
-#kittygram
-#kittygram
-server {
-server_name tehosmotr886.ddns.net;
-server_tokens off;
-
-
-
-
-location / {
-  proxy_set_header Host $http_host;
-  proxy_pass http://127.0.0.1:8000;
-
-
-
-}
-
-
-  listen 443 ssl; # managed by Certbot
-  ssl_certificate /etc/letsencrypt/live/tehosmotr886.ddns.net/fullchain.pem; # managed by Certbot
-  ssl_certificate_key /etc/letsencrypt/live/tehosmotr886.ddns.net/privkey.pem; # managed by Certbot
-  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-
-}
-server {
-  if ($host = tehosmotr886.ddns.net) {
-      return 301 https://$host$request_uri;
-  } # managed by Certbot
-
-
-
-listen 80;
-server_name tehosmotr886.ddns.net;
-  return 404; # managed by Certbot
-
-}
-
-Для того чтобы при открытии порта 8000 было видно, вам следует настроить Nginx для прослушивания этого порта. Вот как это можно сделать:
-
-Откройте файл конфигурации Nginx для default. Обычно он находится по пути /etc/nginx/sites-enabled/default.
-Внесите следующие изменения в файл:
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    # Корневая директория для веб-сервера
-    root /var/www/html;
-
-    # Индексные файлы
-    index index.html index.htm index.nginx-debian.html;
-
-    # Настройки сервера
-    server_name _;
+    listen 80;
+    server_name tehosagost88811.zapto.org;
 
     location / {
-        # Попытка обработать запрос как файл, затем как директорию,
-        # и в случае неудачи — вернуть 404 ошибку.
-        try_files $uri $uri/ =404;
-    }
-
-    location /8000 {
-        proxy_pass http://127.0.0.1:8000; # Проксирование на порт 8000
+        proxy_pass http://127.0.0.1:8000;  # Замените YOUR_PORT на порт вашего приложения
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
