@@ -31,24 +31,24 @@ ssh-keygen -t rsa -b 4096
 Далее задаем имя ключа или оставляем вариант по умолчанию (~/.ssh/id_rsa). Вводим дополнительный пароль – пассфразу – и подтверждаем ее.
 Далее копируем SSH-ключи на аккаунт с помощью команды:
 
-ssh-copy-id root@185.251.89.167
+ssh-copy-id root@45.91.8.241
 где login – логин аккаунта, server – IP-адрес сервера.
 Готово! Попробуйте подключиться по SSH к аккаунту хостинга и при авторизации укажите пассфразу.
 Терминал в Linux и Mac OS
 Для подключения по SFTP используйте приложение «Терминал».
 Запустите программу и введите команду:
 
-ssh -t root@185.251.89.167 'passwd'
+ssh -t root@45.91.8.241 'passwd'
 
-ssh root@185.251.89.167
+ssh root@45.91.8.241
 
-sftp root@185.251.89.167
+sftp root@45.91.8.241
 
 перенести папку 
 
-scp -r avtoservis7 root@185.251.89.167:avtoservis7
+scp -r avtoservis7 root@45.91.8.241:avtoservis7
 
-scp -r Dockerfile root@185.251.89.167:avtoservis7/Dockerfile
+scp -r Dockerfile root@45.91.8.241:avtoservis7/Dockerfile
 
 
 3. Соберите Docker-образ, выполнив команду в той же директории, где находится ваш Dockerfile:
@@ -179,7 +179,7 @@ sudo docker compose -f docker-compose.production.yml up -d
 docker run -e POSTGRES_PASSWORD=foodgram_password -e POSTGRES_USER=foodgram_user postgres:13
 
 
-sudo ssh root@185.251.89.167
+sudo ssh root@45.91.8.241
 
 
 
