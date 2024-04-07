@@ -471,7 +471,7 @@ openssl req -new -key ssl_certificate_key.pem -out ssl_certificate.csr
 csharp
 Copy code
 
-openssl x509 -req -days 365 -in ssl_certificate.csr -signkey ssl_certificate_key.pem -out 
+openssl x509 -req -days 365 -in ssl_certificate.csr -signkey ssl_certificate_key.pem -out ssl_certificate.crt
 
 сертификат.crt
 Это создаст самоподписанный SSL сертификат сертификат.crt, который будет действителен в течение 365 дней. Можете изменить количество дней, указав другое значение после параметра -days.
