@@ -420,6 +420,7 @@ sudo docker system prune
 sudo docker rmi -f $(sudo docker images -q)
 
 
+ssh root@45.91.8.241
 
 
 Откройте файл sudo nano /etc/nginx/sites-enabled/default и убедитесь в этом:
@@ -439,3 +440,76 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }
+
+
+Чтобы создать SSL сертификат через терминал, вы можете использовать инструмент OpenSSL, который обычно доступен в большинстве UNIX-подобных систем, таких как Linux и macOS. Вот пример шагов для создания самоподписанного SSL сертификата:
+
+Откройте терминал: Запустите терминал на вашем компьютере.
+
+Установите OpenSSL (если не установлен): В большинстве случаев OpenSSL уже установлен в вашей системе. Если нет, установите его, используя менеджер пакетов вашей системы.
+
+Создайте закрытый ключ (private key): Введите следующую команду в терминале:
+
+csharp
+Copy code
+
+openssl genrsa -out ssl_certificate_key.pem 2048
+
+Это создаст закрытый ключ в файле ключ.pem.
+
+Создайте запрос на сертификат (certificate signing request, CSR): Введите следующую команду:
+
+csharp
+Copy code
+
+openssl req -new -key ssl_certificate_key.pem -out ssl_certificate.csr
+
+Это создаст CSR файл запрос.csr, который потребуется для создания самоподписанного сертификата.
+
+Создайте самоподписанный сертификат: Введите следующую команду:
+
+csharp
+Copy code
+
+openssl x509 -req -days 365 -in ssl_certificate.csr -signkey ssl_certificate_key.pem -out 
+
+сертификат.crt
+Это создаст самоподписанный SSL сертификат сертификат.crt, который будет действителен в течение 365 дней. Можете изменить количество дней, указав другое значение после параметра -days.
+
+Теперь у вас есть самоподписанный SSL сертификат сертификат.crt и закрытый ключ ключ.pem. Обратите внимание, что для использования в реальной продукционной среде лучше использовать сертификат, подписанный д
+
+
+Чтобы ваш сайт открывался по протоколу HTTPS, вам необходимо настроить SSL сертификат для вашего сервера Nginx. Вот как вы можете изменить ваш конфигурационный файл /etc/nginx/sites-enabled/default:
+
+server {
+    listen 80;
+    server_name tehosagost88811.zapto.org;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name tehosagost88811.zapto.org;
+
+    ssl_certificate /path/to/your/ssl_certificate.crt;
+    ssl_certificate_key /path/to/your/private_key.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;  # Замените YOUR_PORT на порт вашего приложения
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        # Дополнительные настройки для проксирования, если необходимо
+    }
+}
+
+В этом обновленном конфигурационном файле:
+
+Первый серверный блок прослушивает порт 80 и перенаправляет все запросы на HTTPS с помощью кода состояния 301 (перемещено навсегда).
+
+Второй серверный блок прослушивает порт 443 (стандартный порт HTTPS) и настраивает SSL. Пути к вашему SSL-сертификату и закрытому ключу должны быть указаны в параметрах ssl_certificate и ssl_certificate_key.
+
+Внутри блока location / вы можете оставить ваши текущие настройки проксирования.
+
+Прежде чем использовать этот конфигурационный файл, убедитесь, что у вас есть действующий SSL-сертификат и закрытый ключ. Помимо этого, убедитесь, что порт 443 открыт и доступен на вашем сервере.
