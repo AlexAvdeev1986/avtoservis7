@@ -44,10 +44,12 @@ ssh root@45.91.8.241
 
 sftp root@45.91.8.241
 
+установить на сервер
+
  apt install python3-pip
 
  pip install Django
- 
+
 перенести папку 
 
 scp -r avtoservis7 root@45.91.8.241:avtoservis7
@@ -275,36 +277,6 @@ sudo ufw enable
 
 
 
-...Открываем конфигурационный файл NGINX
-sudo nano /etc/nginx/sites-enabled/default
-Полностью удаляем из него все и пишем новые настройки...
-
-
-
-
-1.Пример файла nginx находится в default
-
-
-...Сохраняем изменения и выходим из редактора
-Проверяем корректность настроек...
-sudo nginx -t
-
-
-
-
-Запускаем NGINX
-sudo systemctl start nginx
-
-
-
-
-Перезапускаем Nginx
-
-
-
-
-sudo service nginx reload
-
 
 
 
@@ -412,6 +384,32 @@ sudo docker ps -a
 sudo docker stop Image
 sudo docker rm Image
 sudo docker rmi Image Image
+
+
+...Открываем конфигурационный файл NGINX
+sudo nano /etc/nginx/sites-enabled/default
+Полностью удаляем из него все и пишем новые настройки...
+
+
+
+sudo apt update
+sudo apt install nginx
+
+1.Пример файла nginx находится в default
+
+
+...Сохраняем изменения и выходим из редактора
+Проверяем корректность настроек...
+sudo nginx -t
+
+Запускаем NGINX
+sudo systemctl start nginx
+
+Перезапускаем Nginx
+
+
+sudo service nginx reload
+
 
 
 
