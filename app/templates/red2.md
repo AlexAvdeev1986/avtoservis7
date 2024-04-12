@@ -44,6 +44,10 @@ ssh root@45.91.8.241
 
 sftp root@45.91.8.241
 
+ apt install python3-pip
+
+ pip install Django
+ 
 перенести папку 
 
 scp -r avtoservis7 root@45.91.8.241:avtoservis7
